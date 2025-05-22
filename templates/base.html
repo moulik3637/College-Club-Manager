@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}College Club Manager{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="{{ url_for('index') }}" class="logo">
+                    <img src="{{ url_for('static', filename='nit.png') }}" alt="Logo" style="height: 50px; vertical-align: middle; margin-right: 8px;">
+                    NIT Delhi Club Manager
+                  </a>
+                <div class="nav-links">
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    {% if current_user.is_authenticated %}
+                    {% if current_user.role == 'student' %}
+                    <a href="{{ url_for('opportunities') }}">Opportunities</a>
+                    {% elif current_user.role == 'club_rep' %}
+                    <a href="{{ url_for('club_opportunities') }}">Opportunities</a>
+                    {% endif %}
+                    {% endif %}
+
+                    <div class="user-dropdown">
+                        <span class="username-display">{{ current_user.username }}</span>
+                        <div class="dropdown-content">
+                            <a style="color:black;" href="{{ url_for('profile') }}">Profile</a>
+                            <a style="color:black;" href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </div>
+                    {% else %}                    
+                    <a id="Login" href="{{ url_for('login') }}">Login</a>
+                    <a id="register" href="{{ url_for('register') }}">Register</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+
+</html>

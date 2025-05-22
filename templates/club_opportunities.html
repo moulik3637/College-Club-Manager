@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}My Opportunities{% endblock %}
+
+{% block content %}
+<div class="opportunities-container">
+    <h1>My Posted Opportunities</h1>
+
+    {% if opportunities %}
+    <div class="opportunities-grid">
+        {% for opp in opportunities %}
+        <div class="opportunity-item">
+            <div class="opportunity-type">{{ opp.type|capitalize }}</div>
+
+            <div class="opportunity-title">
+                <a href="{{ url_for('opportunity_detail', opp_id=opp.id) }}">
+                    {{ opp.title }}
+                </a>
+            </div>
+
+            <div class="opportunity-description">
+                <p>{{ opp.description }}</p>
+            </div>
+
+            <div class="opportunity-deadline">
+                <i class="fas fa-clock"></i>
+                <span>Deadline: {{ opp.deadline.strftime('%b %d, %Y %I:%M %p') }}</span>
+            </div>
+
+            <div class="opportunity-actions">
+                <a href="{{ url_for('opportunity_detail', opp_id=opp.id) }}" class="btn btn-outline">
+                    <i class="fas fa-info-circle"></i> View Details
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No opportunities posted yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

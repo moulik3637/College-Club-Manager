@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Select Registration Type{% endblock %}
+
+{% block content %}
+<div class="registration-container">
+    <h1>Register As</h1>
+    <div class="role-options">
+        <a href="{{ url_for('register_student') }}" class="role-card">
+            <div class="role-icon">🎓</div>
+            <h3>Student</h3>
+            <p>Join clubs and apply for opportunities</p>
+        </a>
+        <a href="{{ url_for('register_club') }}" class="role-card">
+            <div class="role-icon">🏛️</div>
+            <h3>Club Representative</h3>
+            <p>Create and manage club opportunities</p>
+        </a>
+    </div>
+    <p class="login-link">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+</div>
+
+
+{% endblock %}

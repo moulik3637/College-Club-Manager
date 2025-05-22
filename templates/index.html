@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | College Club Manager{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+  <div class="hero-content">
+    <h1>Connect with Opportunities</h1>
+    <p class="hero-description">
+      Join students and clubs in a vibrant campus community. 
+      Discover club memberships and leadership opportunities.
+    </p>
+    <div class="hero-buttons">
+      <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+      <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+    </div>
+  </div>
+</div>
+
+<div class="how-it-works">
+  <div class="container">
+    <h2>How It Works</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <h3>For Students</h3>
+        <p>Find club positions, leadership roles, and campus opportunities that match your interests.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <h3>For Clubs</h3>
+        <p>Find talented students to join your organization and manage your opportunities.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

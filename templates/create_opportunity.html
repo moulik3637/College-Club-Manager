@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Opportunity{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 style="font-size:38px ; margin-left: 550px; margin-top: 20px; border-radius: 20px;">Create New Opportunity</h2>
+    
+    <form method="post" class="opportunity-form">
+        <div class="form-group">
+            <label for="title">Title*</label>
+            <input type="text" id="title" name="title" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="type">Type*</label>
+            <select id="type" name="type" class="form-control" required>
+                <option value="technical">Technical</option>
+                <option value="cultural">Cultural</option>
+                <option value="research">Desiging</option>
+                <option value="research">Video Editing</option>
+                <option value="research">Photography</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description*</label>
+            <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="requirements">Requirements*</label>
+            <textarea id="requirements" name="requirements" class="form-control" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="deadline">Deadline*</label>
+            <input type="datetime-local" id="deadline" name="deadline" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="positions">Number of Positions*</label>
+            <input type="number" id="positions" name="positions" class="form-control" min="1" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="google_form_link">Application Form Link*</label>
+            <input type="url" id="google_form_link" name="google_form_link" 
+                   class="form-control" placeholder="https://docs.google.com/forms/..." required>
+            <small class="form-text">This is the link students will use to apply</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="google_responses_link">Responses Spreadsheet Link*</label>
+            <input type="url" id="google_responses_link" name="google_responses_link"
+                   class="form-control" placeholder="https://docs.google.com/spreadsheets/..." required>
+            <small class="form-text">Get this from Google Forms "Responses" tab</small>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Opportunity</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

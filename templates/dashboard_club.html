@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Club Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h2 style="font-size:40px ; margin-left: 500px; margin-top: 20px; border-radius: 20px;">Club Dashboard</h2>
+        <a style="margin-right: 10px; margin-top: 50px;" href="{{ url_for('create_opportunity') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create New Opportunity
+        </a>
+    </div>
+
+    {% if active_opportunities %}
+    <div class="opportunities-list">
+        <h3 style="font-size: 30px; margin:8px; margin-left: 200px; font-weight: 1600;">Your Active Opportunities</h3>
+        <div style="display:flex; margin-left: 200px; height:300px; border-color: beige;" class="opportunity-cards">
+            {% for opportunity in active_opportunities %}
+            <div class="opportunity-card">
+                <div class="card-header">
+                    <h4>
+                        <a href="{{ url_for('opportunity_detail', opp_id=opportunity.id) }}">
+                            {{ opportunity.title }}
+                        </a>
+                    </h4>
+                    <span class="badge {{ opportunity.type }}">{{ opportunity.type|capitalize }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="deadline">
+                        <i class="fas fa-clock"></i>
+                        Deadline: {{ opportunity.deadline.strftime('%Y-%m-%d %H:%M') }}
+                    </p>
+                    <p class="status">
+                        Status: <span class="status-{{ opportunity.status }}">{{ opportunity.status|capitalize }}</span>
+                    </p>
+                </div>
+                <div style="margin: 10px;" class="card-actions">
+                    <a href="{{ opportunity.google_form_link }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt"></i> Application Form
+                    </a>
+                    <a href="{{ opportunity.google_responses_link }}" target="_blank" class="btn btn-success btn-sm">
+                        <i class="fas fa-users"></i> View Applicants
+                    </a>
+                    <a href="{{ url_for('edit_opportunity', opp_id=opportunity.id) }}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form action="{{ url_for('close_opportunity', opp_id=opportunity.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-door-closed"></i> Close
+                        </button>
+                    </form>
+                    <form action="{{ url_for('delete_opportunity', opp_id=opportunity.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this opportunity?');">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="no-opportunities">
+        <div style="margin-left: 200px; font-size: 20px;" class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No active opportunities found.
+        </div>
+    </div>
+    {% endif %}
+
+    {% if closed_opportunities %}
+    <div class="closed-opportunities-list" style="margin-top: 3rem;">
+        <h3 style="font-size: 30px; margin:8px; margin-left: 200px; font-weight: 1600;">Closed Opportunities</h3>
+        <div style="width:1030px; margin-left: 200px; height:300px; border-color: beige;" class="opportunity-cards">
+            {% for opportunity in closed_opportunities %}
+            <div class="opportunity-card">
+                <div class="card-header">
+                    <h4>
+                        <a href="{{ url_for('opportunity_detail', opp_id=opportunity.id) }}">
+                            {{ opportunity.title }}
+                        </a>
+                    </h4>
+                    <span class="badge {{ opportunity.type }}">{{ opportunity.type|capitalize }}</span>
+                    <span class="badge badge-closed" style="background-color: #ff6b6b;">Closed</span>
+                </div>
+                <div class="card-body">
+                    <p class="deadline">
+                        <i class="fas fa-clock"></i>
+                        Deadline: {{ opportunity.deadline.strftime('%Y-%m-%d %H:%M') }}
+                    </p>
+                    <p class="status">
+                        Status: <span class="status-{{ opportunity.status }}">{{ opportunity.status|capitalize }}</span>
+                    </p>
+                </div>
+                <div class="card-actions">
+                    <a href="{{ opportunity.google_responses_link }}" target="_blank" class="btn btn-success btn-sm">
+                        <i class="fas fa-users"></i> View Applicants
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

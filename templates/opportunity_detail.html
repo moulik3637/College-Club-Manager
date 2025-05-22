@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ opportunity.title }}{% endblock %}
+
+{% block content %}
+<div class="opportunity-container">
+    <div class="opportunity-header">
+        <h1>{{ opportunity.title }}</h1>
+        <div class="opportunity-meta">
+            <span class="badge">{{ opportunity.type|upper }}</span>
+            <span class="status-badge">{{ opportunity.status|capitalize }}</span>
+            <span class="deadline">
+                <i class="fas fa-clock"></i>
+                Deadline: {{ opportunity.deadline.strftime('%B %d, %Y at %I:%M %p') }}
+            </span>
+        </div>
+    </div>
+
+    <div class="opportunity-content">
+        <section>
+            <h2>Description</h2>
+            <p style="font-size: 1.2rem; font-weight: 500;">{{ opportunity.description }}</p>
+        </section>
+    
+        <section>
+            <h2>Requirements</h2>
+            <p style="font-size: 1.2rem; font-weight: 500;">{{ opportunity.requirements }}</p>
+        </section>
+    
+        <section>
+            <h2>Positions Available</h2>
+            <p style="font-size: 1.2rem; font-weight: 500;">{{ opportunity.positions }}</p>
+        </section>
+    </div>
+
+    <div class="opportunity-actions">
+        {% if current_user.role == 'student' %}
+            {% if not has_applied and opportunity.status == 'active' %}
+                <a href="{{ url_for('apply_opportunity_redirect', opp_id=opportunity.id) }}"
+                   class="btn btn-primary" style="margin-bottom: 1rem;">
+                    Apply Now
+                </a>
+                <p class="text-muted" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 2rem;">
+                    You'll be redirected to the Google Form to complete your application.
+                </p>
+            {% elif has_applied %}
+                <div class="alert alert-success" style="margin-bottom: 2rem;">
+                    <i class="fas fa-check-circle"></i> You've already applied to this opportunity
+                </div>
+            {% elif opportunity.status != 'active' %}
+                <div class="alert alert-danger" style="margin-bottom: 2rem;">
+                    <i class="fas fa-info-circle"></i> This opportunity is closed. Applications are no longer accepted.
+                </div>
+            {% endif %}
+        {% endif %}
+    
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+            Back to Dashboard
+        </a>
+    </div>
+    
+    
+</div>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Opportunities{% endblock %}
+
+{% block content %}
+<div class="opportunities-container">
+    <div class="dashboard-header">
+        <h1 style="font-size: 40px;">Opportunities</h1>
+        <div class="stats-container">
+            <div class="stat-card">
+                <span class="stat-number">{{ applications_count }}</span>
+                <span class="stat-label">Applications Submitted</span>
+            </div>
+            <div class="stat-card urgent">
+                <span class="stat-number">{{ approaching_deadlines }}</span>
+                <span class="stat-label">Deadlines Approaching</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-buttons" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <button class="tab-btn active" onclick="openTab('activeTab')">Active Opportunities</button>
+        <button class="tab-btn" onclick="openTab('closedTab')">Past Opportunities</button>
+    </div>
+
+    <div id="activeTab" class="tab-content" style="display: block;">
+        {% if active_opportunities %}
+        <div class="opportunities-grid">
+            {% for opportunity in active_opportunities %}
+            <div class="opportunity-item">
+                <div class="opportunity-type">{{ opportunity.type|capitalize }}</div>
+
+                <div class="opportunity-title">
+                    <a href="{{ url_for('opportunity_detail', opp_id=opportunity.id) }}">
+                        {{ opportunity.title }}
+                    </a>
+                </div>
+
+                <div class="opportunity-description">
+                    <p>{{ opportunity.description }}</p>
+                </div>
+
+                <div class="opportunity-deadline">
+                    <i class="fas fa-clock"></i>
+                    <span>Deadline: {{ opportunity.deadline.strftime('%b %d, %Y %I:%M %p') }}</span>
+                </div>
+
+                <div class="opportunity-actions">
+                    {% if opportunity.id not in applied_opportunity_ids %}
+                    <a href="{{ url_for('apply_opportunity_redirect', opp_id=opportunity.id) }}" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Apply Now
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('opportunity_detail', opp_id=opportunity.id) }}" class="btn btn-outline">
+                        <i class="fas fa-info-circle"></i> View Details
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No active opportunities available at the moment.</p>
+        {% endif %}
+    </div>
+
+    <div id="closedTab" class="tab-content" style="display: none;">
+        {% if closed_opportunities %}
+        <div class="opportunities-grid">
+            {% for opportunity in closed_opportunities %}
+            <div class="opportunity-item">
+                <div class="opportunity-type">{{ opportunity.type|capitalize }}</div>
+
+                <div class="opportunity-title">
+                    <a href="{{ url_for('opportunity_detail', opp_id=opportunity.id) }}">
+                        {{ opportunity.title }}
+                    </a>
+                    <span class="closed-badge" style="margin-left: 10px; background-color: #ff6b6b; padding: 2px 6px; border-radius: 5px; font-size: 0.8rem;">Closed</span>
+                </div>
+
+                <div class="opportunity-description">
+                    <p>{{ opportunity.description }}</p>
+                </div>
+
+                <div class="opportunity-deadline">
+                    <i class="fas fa-clock"></i>
+                    <span>Deadline: {{ opportunity.deadline.strftime('%b %d, %Y %I:%M %p') }}</span>
+                </div>
+
+                <div class="opportunity-actions">
+                    <a href="{{ url_for('opportunity_detail', opp_id=opportunity.id) }}" class="btn btn-outline">
+                        <i class="fas fa-info-circle"></i> View Details
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No past opportunities available.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function openTab(tabId) {
+    var i, tabcontent, tabbtns;
+    
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    
+    tabbtns = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tabbtns.length; i++) {
+        tabbtns[i].classList.remove("active");
+    }
+    
+    document.getElementById(tabId).style.display = "block";
+    event.currentTarget.classList.add("active");
+}
+</script>
+
+<style>
+.tab-buttons {
+    text-align: center;
+}
+.tab-btn {
+    background-color: #eee;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.tab-btn:hover {
+    background-color: #ddd;
+}
+.tab-btn.active {
+    background-color: #3f37f3;
+    color: white;
+}
+</style>
+{% endblock %}

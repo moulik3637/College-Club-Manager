@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Club Registration{% endblock %}
+
+{% block content %}
+<div class="registration-form">
+    <h1>Club Representative Registration</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="club_name">Club Name</label>
+            <input type="text" id="club_name" name="club_name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="general_secretary">General Secretary (GS)</label>
+            <input type="text" id="general_secretary" name="general_secretary" required>
+        </div>
+        <div class="form-group">
+            <label for="deputy_general_secretary">Deputy General Secretary (DGS)</label>
+            <input type="text" id="deputy_general_secretary" name="deputy_general_secretary" required>
+        </div>
+        <div class="form-group">
+            <label for="faculty_coordinator">Faculty Coordinator</label>
+            <input type="text" id="faculty_coordinator" name="faculty_coordinator" required>
+        </div>
+        
+        <button type="submit" class="submit-btn">Register</button>
+    </form>
+    <p class="login-link">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+</div>
+
+{% endblock %}
