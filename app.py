@@ -4,6 +4,9 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_mysqldb import MySQL
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.config['SECRET_KEY'] = 'Aykjz9J4mYVUx9w2Vj6rWqLm7bn95mP6'
