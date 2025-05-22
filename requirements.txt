@@ -46,4 +46,5 @@ traitlets==5.14.3
 typing_extensions==4.13.2
 wcwidth==0.2.13
 Werkzeug==2.3.7
+psycopg2-binary==2.9.9
 
