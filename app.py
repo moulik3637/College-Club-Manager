@@ -1,35 +1,38 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_mysqldb import MySQL
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import os
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.config['SECRET_KEY'] = 'Aykjz9J4mYVUx9w2Vj6rWqLm7bn95mP6'
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Moulik3637'
-app.config['MYSQL_DB'] = 'college_club_manager'
 
-mysql = MySQL(app)
+# Use environment variable or fallback to your PostgreSQL URL (for dev/testing)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URL',
+    'postgresql://college_club_manager_user:O1RPIFGd5ARVaWgfkdoDOgv2QQybbozW@dpg-d0nfimqdbo4c73c44k50-a/college_club_manager'
+)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-class User(UserMixin):
-    def __init__(self, id_, username, role):
-        self.id = id_
-        self.username = username
-        self.role = role
+class User(UserMixin, db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.String(50), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT id, username, role FROM users WHERE id = %s", (user_id,))
-    user = cur.fetchone()
-    cur.close()
+    user = User.query.get(int(user_id))
     if user:
-        return User(user[0], user[1], user[2])
+        return User(user.id, user.username, user.role)
     return None
 
 @app.route('/')
@@ -38,7 +41,6 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-  
     if request.method == 'POST':
         role = request.form['role']
         if role == 'student':
@@ -48,7 +50,7 @@ def register():
         else:
             flash('Invalid role selected')
             return redirect(url_for('register'))
-    
+
     return render_template('register_role.html')
 
 @app.route('/register/student', methods=['GET', 'POST'])
