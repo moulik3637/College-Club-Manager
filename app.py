@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
-app.config['SECRET_KEY'] = 'Aykjz9J4mYVUx9w2Vj6rWqLm7bn95mP6'
+app.config['SECRET_KEY'] = 'Seceret_Key'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Moulik3637'
