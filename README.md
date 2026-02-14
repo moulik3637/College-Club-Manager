@@ -243,6 +243,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Moulik**
 - GitHub: [@moulik3637](https://github.com/moulik3637)
 
+**Prince**
+- GitHub: [@princerajcodewithme](https://github.com/princerajcodewithme)
+
 ## 🙏 Acknowledgments
 
 - Flask documentation and community
